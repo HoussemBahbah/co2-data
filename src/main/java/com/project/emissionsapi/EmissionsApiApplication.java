@@ -1,6 +1,8 @@
 package com.project.emissionsapi;
 
 import com.project.emissionsapi.entity.City;
+import com.project.emissionsapi.entity.Co2Level;
+import com.project.emissionsapi.entity.District;
 import com.project.emissionsapi.entity.UserDetail;
 import com.project.emissionsapi.repositories.CityRepository;
 import com.project.emissionsapi.repositories.UserDetailRepository;
@@ -13,6 +15,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @SpringBootApplication
 
@@ -41,8 +46,13 @@ public class EmissionsApiApplication {
 
 			String username="user";
 			UserDetail userDetail =new UserDetail();
-			City Barcelona=addCity("Barcelona","20","district6");
-			City Wien=addCity("Wien","30","district6");
+			City Barcelona=addCity("Barcelona");
+			Barcelona.setDistricts(Arrays.asList(
+					new District("Gracia"),
+					new District("Eixample")));
+			Barcelona.getDistricts().get(0).setCo2Levels(Arrays.asList(new Co2Level("20","06/06/2022")));
+			City Wien=addCity("Wien");
+			Wien.setDistricts(Arrays.asList(new District("Währing"),new District("Penzing")));
 
 			boolean userExist = userDetailRepository.existsByUsername(username);
 			if (!userExist) {
@@ -54,8 +64,8 @@ public class EmissionsApiApplication {
 		}
 
 
-		public City addCity(String name,String co2Level,String district){
-			City city=new City(name,co2Level,district);
+		public City addCity(String name){
+			City city=new City(name);
 			boolean isCityExist=cityRepository.existsByName(city.getName());
 			if(!isCityExist){
 				cityRepository.save(city);
