@@ -1,6 +1,8 @@
 package com.project.emissionsapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,13 +17,15 @@ public class District {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String districtName;
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="city_id")
     private City city;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "district", cascade = CascadeType.REMOVE)
-    private List<Co2Level> Co2Levels;
+    private List<Co2Level> co2Levels;
 
 
     public District(String districtName) {
@@ -31,5 +35,13 @@ public class District {
     public District() {
     }
 
-
+    @Override
+    public String toString() {
+        return "District{" +
+                "id=" + id +
+                ", districtName='" + districtName + '\'' +
+                ", city=" + city +
+                ", Co2Levels=" + co2Levels +
+                '}';
+    }
 }

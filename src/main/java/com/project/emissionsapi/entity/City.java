@@ -1,6 +1,8 @@
 package com.project.emissionsapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,16 +19,25 @@ public class City {
     private String name;
 
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "city", cascade = CascadeType.REMOVE)
-    private List<UserDetail> userDetail;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "city", cascade = CascadeType.REMOVE)
+//    private List<UserDetail> userDetail;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "city", cascade = CascadeType.REMOVE)
     private List<District> districts;
 
     public City(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", districts=" + districts +
+                '}';
     }
 
     public City() {

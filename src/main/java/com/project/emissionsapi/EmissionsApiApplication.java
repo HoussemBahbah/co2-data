@@ -5,6 +5,8 @@ import com.project.emissionsapi.entity.Co2Level;
 import com.project.emissionsapi.entity.District;
 import com.project.emissionsapi.entity.UserDetail;
 import com.project.emissionsapi.repositories.CityRepository;
+import com.project.emissionsapi.repositories.Co2LevelRepository;
+import com.project.emissionsapi.repositories.DistrictRepository;
 import com.project.emissionsapi.repositories.UserDetailRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,10 @@ public class EmissionsApiApplication {
 		@Autowired
 		private CityRepository cityRepository;
 		@Autowired
+		private DistrictRepository districtRepository;
+		@Autowired
+		private Co2LevelRepository co2LevelRepository;
+		@Autowired
 		private PasswordEncoder passwordEncoder;
 
 		@Override
@@ -46,14 +52,28 @@ public class EmissionsApiApplication {
 
 			String username="user";
 			UserDetail userDetail =new UserDetail();
-			City Barcelona=addCity("Barcelona");
-			Barcelona.setDistricts(Arrays.asList(
-					new District("Gracia"),
-					new District("Eixample")));
-			Barcelona.getDistricts().get(0).setCo2Levels(Arrays.asList(new Co2Level("20","06/06/2022")));
+
+			City Barcelona=new City("Barcelona");
+			District garcia=new District("Gracia");
+			District eixample=new District("Eixample");
+			Co2Level co2Level=new Co2Level("22","06/08/2022");
+			co2Level.setDistrict(garcia);
+
+			garcia.setCo2Levels(Arrays.asList(co2Level));
+			garcia.setCity(Barcelona);
+			eixample.setCity(Barcelona);
+			Barcelona.setDistricts(Arrays.asList(garcia,eixample));
+			cityRepository.save(Barcelona);
+			districtRepository.save(garcia);
+			districtRepository.save(eixample);
+			co2LevelRepository.save(co2Level);
+			//co2LevelRepository.save(co2Level);
+
+
+
+			Barcelona.setDistricts(Arrays.asList(garcia,eixample));
 			City Wien=addCity("Wien");
 			Wien.setDistricts(Arrays.asList(new District("Währing"),new District("Penzing")));
-
 			boolean userExist = userDetailRepository.existsByUsername(username);
 			if (!userExist) {
 				userDetail.setUsername(username);
