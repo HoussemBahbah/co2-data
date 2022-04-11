@@ -7,6 +7,7 @@ import com.project.emissionsapi.entity.UserDetail;
 import com.project.emissionsapi.model.MessageResponse;
 import com.project.emissionsapi.service.CityService;
 import com.project.emissionsapi.service.Co2LevelService;
+import com.project.emissionsapi.service.DistrictService;
 import com.project.emissionsapi.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +30,9 @@ import java.util.List;
         @Autowired
         private UserDetailService userDetailService;
 
+        @Autowired
+        private DistrictService districtService;
+
         @PostMapping
         public MessageResponse save(@RequestBody Co2Level co2Level) {
             return co2LevelService.save(co2Level);
@@ -44,20 +48,21 @@ import java.util.List;
             return co2LevelService.delete(id);
         }
 
-        @GetMapping
+        @GetMapping("/{all}")
         public List<Co2Level> findAll() {
             return co2LevelService.findAll();
         }
 
-        @GetMapping("/{districtName}")
-        public List<District> findByCity() {
+        @RequestMapping(method = RequestMethod.GET)
+        public List<Co2Level> findByCity(@RequestParam(value="districtName") String districtName) {
             String username =  SecurityContextHolder.getContext().getAuthentication().getName();
             UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
             City city=cityService.findByName(loggedInUser.getCity().getName());
-            return city.getDistricts();
-
-
+            return districtService.findByCityAndName(city,districtName).getCo2Levels();
         }
+
+
+
 
 
 

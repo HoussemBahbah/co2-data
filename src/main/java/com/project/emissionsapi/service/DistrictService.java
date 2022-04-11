@@ -1,5 +1,6 @@
 package com.project.emissionsapi.service;
 
+import com.project.emissionsapi.entity.City;
 import com.project.emissionsapi.entity.District;
 import com.project.emissionsapi.model.MessageResponse;
 import com.project.emissionsapi.repositories.DistrictRepository;
@@ -42,9 +43,15 @@ public class DistrictService {
         return districtRepository.findById(id).orElse(null);
     }
 
-    public District findByName(String name) {
-        return districtRepository.findByDistrictName(name);
+    public District findByCityAndName(City city, String name) {
+        return districtRepository.findByCityAndDistrictName(city, name);
     }
+
+
+    public District findByName( String name) {
+        return districtRepository.findByDistrictName( name);
+    }
+
 
     public List<District> findAll() {
         return districtRepository.findAll();

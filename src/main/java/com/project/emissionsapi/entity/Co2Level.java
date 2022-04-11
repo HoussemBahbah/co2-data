@@ -26,6 +26,14 @@ public class Co2Level {
         this.timestamp = timestamp;
     }
 
+    @Override
+    public String toString() {
+        return "Co2Level{" +
+                "level='" + level + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                '}';
+    }
+
     public Co2Level() {
     }
     //    @JsonIgnore

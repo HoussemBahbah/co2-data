@@ -36,7 +36,7 @@ public class City {
         return "City{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", districts=" + districts +
+//                ", districts=" + districts +
                 '}';
     }
 
