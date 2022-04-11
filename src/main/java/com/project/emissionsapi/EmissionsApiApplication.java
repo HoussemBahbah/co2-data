@@ -13,13 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.WeakHashMap;
 
 @SpringBootApplication
 
@@ -49,36 +52,55 @@ public class EmissionsApiApplication {
 		@Override
 		public void run(ApplicationArguments args) throws Exception {
 
-
 			String username="user";
 			UserDetail userDetail =new UserDetail();
 
-			City Barcelona=new City("Barcelona");
-			District garcia=new District("Gracia");
-			District eixample=new District("Eixample");
-			Co2Level co2Level=new Co2Level("22","06/08/2022");
-			co2Level.setDistrict(garcia);
-
-			garcia.setCo2Levels(Arrays.asList(co2Level));
-			garcia.setCity(Barcelona);
-			eixample.setCity(Barcelona);
-			Barcelona.setDistricts(Arrays.asList(garcia,eixample));
-			cityRepository.save(Barcelona);
-			districtRepository.save(garcia);
-			districtRepository.save(eixample);
-			co2LevelRepository.save(co2Level);
-			//co2LevelRepository.save(co2Level);
+			City Barcelona=addCity("Barcelona");
+			District gracia=addDistrictToCity(new District("Gracia"),Barcelona);
+			District eixample=addDistrictToCity(new District("Eixample"),Barcelona);
 
 
-
-			Barcelona.setDistricts(Arrays.asList(garcia,eixample));
 			City Wien=addCity("Wien");
-			Wien.setDistricts(Arrays.asList(new District("Währing"),new District("Penzing")));
+			addDistrictToCity(new District("Währing"),Wien);
+			addDistrictToCity(new District("Penzing"),Wien);
+
+			cityRepository.save(Barcelona);
+			cityRepository.save(Wien);
+
+			addUser(username, userDetail, Barcelona);
+		}
+
+
+
+		@Bean
+		CommandLineRunner initializeData(@Autowired CityRepository cityRepository) {
+			return args -> {
+				// save a couple of customers
+
+			};
+		}
+
+
+
+
+		private District addDistrictToCity(District district, City city) {
+			boolean isDistrictExist=districtRepository.existsByDistrictName(district.getDistrictName());
+			if(!isDistrictExist){
+				district.setCity(city);
+				city.getDistricts().add(district);
+				districtRepository.save(district);
+				cityRepository.save(city);
+			}
+
+			return districtRepository.findByDistrictName(district.getDistrictName());
+		}
+
+		private void addUser(String username, UserDetail userDetail, City city) {
 			boolean userExist = userDetailRepository.existsByUsername(username);
 			if (!userExist) {
 				userDetail.setUsername(username);
 				userDetail.setPassword(passwordEncoder.encode("password"));
-				userDetail.setCity(Barcelona);
+				userDetail.setCity(city);
 				userDetailRepository.save(userDetail);
 			}
 		}
@@ -90,7 +112,7 @@ public class EmissionsApiApplication {
 			if(!isCityExist){
 				cityRepository.save(city);
 			}
-			return city;
+			return cityRepository.findByName(name);
 		}
 
 	}

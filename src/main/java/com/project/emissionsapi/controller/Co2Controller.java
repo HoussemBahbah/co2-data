@@ -59,9 +59,6 @@ import java.util.List;
             String username =  SecurityContextHolder.getContext().getAuthentication().getName();
             UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
             City city=cityService.findByName(loggedInUser.getCity().getName());
-            System.out.println(city.getName());
-            System.out.println(districtName);
-            System.out.println(districtService.findAll());
             return districtService.findByCityAndName(city,districtName).getCo2Levels();
         }
 
@@ -74,10 +71,10 @@ import java.util.List;
 
     @PostMapping
     public MessageResponse save(@RequestBody SensorData sensorData) {
-
         City city=cityService.findByName(sensorData.getCityName());
         District district=districtService.findByCityAndName(city,sensorData.getDistrictName());
-        Co2Level co2Level=new Co2Level();
+        Co2Level co2Level=new Co2Level(sensorData.getLevel(),sensorData.getTimestamp());
+        System.out.println(sensorData);
         co2Level.setDistrict(district);
         return co2LevelService.save(co2Level);
 

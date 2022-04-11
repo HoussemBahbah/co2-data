@@ -18,12 +18,12 @@ public class District {
     private long id;
     private String districtName;
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name="city_id")
     private City city;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "district", cascade = CascadeType.REMOVE)
     private List<Co2Level> co2Levels;
 

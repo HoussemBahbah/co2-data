@@ -23,8 +23,8 @@ public class City {
 //    @OneToMany(mappedBy = "city", cascade = CascadeType.REMOVE)
 //    private List<UserDetail> userDetail;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "city", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    @OneToMany(mappedBy = "city", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<District> districts;
 
     public City(String name) {

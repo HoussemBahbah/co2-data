@@ -1,6 +1,7 @@
 package com.project.emissionsapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ public class Co2Level {
     private long id;
     private String level;
     private String timestamp;
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name="district_id")
     private District district;
@@ -31,6 +32,8 @@ public class Co2Level {
         return "Co2Level{" +
                 "level='" + level + '\'' +
                 ", timestamp='" + timestamp + '\'' +
+                ", city='" + district.getCity().getName() + '\'' +
+                ", district='" + district.getDistrictName() + '\'' +
                 '}';
     }
 

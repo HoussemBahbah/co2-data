@@ -27,29 +27,19 @@ public class AuthController {
 	@Autowired
 	private UserDetailService userDetailsService;
 
-	@PostMapping("/auth")
+	@PostMapping("/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRequest authenticationRequest)
 			throws Exception {
 		UserDetail userDetails;
-		System.out.println(authenticationRequest);
-		System.out.println("here"+userDetailsService.loadUserByUsername("user").getAuthorities());
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-		System.out.println("here"+userDetailsService.loadUserByUsername("user"));
-
 		userDetails = (UserDetail) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-		System.out.println("here"+userDetailsService.loadUserByUsername("user"));
 		String token = jwtTokenUtil.generateToken(userDetails);
 
 		return ResponseEntity.ok(new LoginResponse(token));
 
 	}
 
-	@PostMapping("/test")
-	public ResponseEntity<?> hey(@RequestBody String authenticationRequest)
-			throws Exception {
-		System.out.println(authenticationRequest);
-		return ResponseEntity.ok(authenticationRequest);
-	}
+
 
 
 
