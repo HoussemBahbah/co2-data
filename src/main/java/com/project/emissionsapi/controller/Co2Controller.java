@@ -18,62 +18,62 @@ import java.util.List;
 
 
 @RestController
-    @RequestMapping("api/co2Level")
-    @CrossOrigin("*")
-    public class Co2Controller {
+@RequestMapping("api/co2Level")
+@CrossOrigin("*")
+public class Co2Controller {
 
-        @Autowired
-        private Co2LevelService co2LevelService;
+    @Autowired
+    private Co2LevelService co2LevelService;
 
-        @Autowired
-        private CityService cityService;
+    @Autowired
+    private CityService cityService;
 
-        @Autowired
-        private UserDetailService userDetailService;
+    @Autowired
+    private UserDetailService userDetailService;
 
-        @Autowired
-        private DistrictService districtService;
+    @Autowired
+    private DistrictService districtService;
 
 //        @PostMapping
 //        public MessageResponse save(@RequestBody Co2Level co2Level) {
 //            return co2LevelService.save(co2Level);
 //        }
 
-        @PutMapping
-        public MessageResponse update(@RequestBody Co2Level co2Level) {
-            return co2LevelService.update(co2Level);
-        }
+    @PutMapping
+    public MessageResponse update(@RequestBody Co2Level co2Level) {
+        return co2LevelService.update(co2Level);
+    }
 
-        @DeleteMapping("/{id}")
-        public MessageResponse delete(@PathVariable Long id) {
-            return co2LevelService.delete(id);
-        }
+    @DeleteMapping("/{id}")
+    public MessageResponse delete(@PathVariable Long id) {
+        return co2LevelService.delete(id);
+    }
 
-        @GetMapping("/{all}")
-        public List<Co2Level> findAll() {
-            return co2LevelService.findAll();
-        }
+    @GetMapping("/{all}")
+    public List<Co2Level> findAll() {
+        return co2LevelService.findAll();
+    }
 
-        @RequestMapping(method = RequestMethod.GET)
-        public List<Co2Level> findByCity(@RequestParam(value="districtName") String districtName) {
-            String username =  SecurityContextHolder.getContext().getAuthentication().getName();
-            UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
-            City city=cityService.findByName(loggedInUser.getCity().getName());
-            return districtService.findByCityAndName(city,districtName).getCo2Levels();
-        }
+    @RequestMapping(method = RequestMethod.GET)
+    public List<Co2Level> findByCity(@RequestParam(value = "districtName") String districtName) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
+        City city = cityService.findByName(loggedInUser.getCity().getName());
+        return districtService.findByCityAndName(city, districtName).getCo2Levels();
+    }
 
 
-        @GetMapping("/{id}")
-        public Co2Level findById(@PathVariable Long id) {
-            return co2LevelService.findById(id);
-        }
+    @GetMapping("/{id}")
+    public Co2Level findById(@PathVariable Long id) {
+        return co2LevelService.findById(id);
+    }
 
 
     @PostMapping
     public MessageResponse save(@RequestBody SensorData sensorData) {
-        City city=cityService.findByName(sensorData.getCityName());
-        District district=districtService.findByCityAndName(city,sensorData.getDistrictName());
-        Co2Level co2Level=new Co2Level(sensorData.getLevel(),sensorData.getTimestamp());
+        City city = cityService.findByName(sensorData.getCityName());
+        District district = districtService.findByCityAndName(city, sensorData.getDistrictName());
+        Co2Level co2Level = new Co2Level(sensorData.getLevel(), sensorData.getTimestamp());
         System.out.println(sensorData);
         co2Level.setDistrict(district);
         return co2LevelService.save(co2Level);

@@ -14,28 +14,24 @@ public class CityService {
     @Autowired
     private CityRepository cityRepository;
 
-    public MessageResponse save(City city){
+    public MessageResponse save(City city) {
         boolean exist = cityRepository.existsById((city.getId()));
         if (exist) {
-            return new MessageResponse(false,"Not Success","Existing");
-
+            return new MessageResponse(false, "Not Success", "Existing");
         }
         cityRepository.save(city);
         return new MessageResponse(true, "Success", "Backend responded save ok");
 
     }
 
-    public MessageResponse update(City city){
-
+    public MessageResponse update(City city) {
         cityRepository.save(city);
         return new MessageResponse(true, "Success", "Backend responded update  ok");
-
     }
 
     public MessageResponse delete(Long id) {
         cityRepository.deleteById(id);
         return new MessageResponse(true, "Success", "Backend responded delete ok");
-
     }
 
     public City findById(Long id) {
@@ -47,9 +43,8 @@ public class CityService {
     }
 
     public List<City> findAll() {
-        List<City> cities=cityRepository.findAll();
+        List<City> cities = cityRepository.findAll();
         return cityRepository.findAll();
-
     }
 
 }

@@ -1,12 +1,8 @@
 package com.project.emissionsapi.controller;
 
-import com.project.emissionsapi.entity.UserDetail;
-import com.project.emissionsapi.model.MessageResponse;
-import com.project.emissionsapi.service.UserDetailService;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 @RestController

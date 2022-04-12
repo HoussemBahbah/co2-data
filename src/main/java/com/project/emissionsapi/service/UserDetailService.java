@@ -24,11 +24,8 @@ public class UserDetailService implements UserDetailsService {
 
 
 	@Override
-
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
 		UserDetail userDetail = userDetailRepository.findOneByUsername(username).orElse(null);
-
 		return userDetail;
 	}
 
@@ -36,7 +33,6 @@ public class UserDetailService implements UserDetailsService {
 		boolean exist = userDetailRepository.existsById((user.getId()));
 		if (exist) {
 			return new MessageResponse(false,"Not Success","Existing");
-
 		}
 		userDetailRepository.save(user);
 		return new MessageResponse(true, "Success", "Backend responded save ok");
@@ -44,10 +40,8 @@ public class UserDetailService implements UserDetailsService {
 	}
 
 	public MessageResponse update(UserDetail userDetail){
-
 		userDetailRepository.save(userDetail);
 		return new MessageResponse(true, "Success", "Backend responded update  ok");
-
 	}
 
 	public MessageResponse delete(Long id) {
@@ -62,7 +56,6 @@ public class UserDetailService implements UserDetailsService {
 
 	public List<UserDetail> findAll() {
 		return userDetailRepository.findAll();
-
 	}
 
 

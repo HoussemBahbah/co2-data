@@ -15,22 +15,19 @@ public class Co2LevelService {
     @Autowired
     private Co2LevelRepository co2LevelRepository;
 
-    public MessageResponse save(Co2Level co2Level){
+    public MessageResponse save(Co2Level co2Level) {
         boolean exist = co2LevelRepository.existsById((co2Level.getId()));
         if (exist) {
-            return new MessageResponse(false,"Not Success","Existing");
-
+            return new MessageResponse(false, "Not Success", "Existing");
         }
         co2LevelRepository.save(co2Level);
         return new MessageResponse(true, "Success", "Backend responded save ok");
 
     }
 
-    public MessageResponse update(Co2Level co2Level){
-
+    public MessageResponse update(Co2Level co2Level) {
         co2LevelRepository.save(co2Level);
         return new MessageResponse(true, "Success", "Backend responded update  ok");
-
     }
 
     public MessageResponse delete(Long id) {
@@ -49,7 +46,6 @@ public class Co2LevelService {
 
     public List<Co2Level> findAll() {
         return co2LevelRepository.findAll();
-
     }
 
 }

@@ -15,10 +15,10 @@ public class DistrictService {
     @Autowired
     private DistrictRepository districtRepository;
 
-    public MessageResponse save(District district){
+    public MessageResponse save(District district) {
         boolean exist = districtRepository.existsById((district.getId()));
         if (exist) {
-            return new MessageResponse(false,"Not Success","Existing");
+            return new MessageResponse(false, "Not Success", "Existing");
 
         }
         districtRepository.save(district);
@@ -26,7 +26,7 @@ public class DistrictService {
 
     }
 
-    public MessageResponse update(District district){
+    public MessageResponse update(District district) {
 
         districtRepository.save(district);
         return new MessageResponse(true, "Success", "Backend responded update  ok");
@@ -48,8 +48,8 @@ public class DistrictService {
     }
 
 
-    public District findByName( String name) {
-        return districtRepository.findByDistrictName( name);
+    public District findByName(String name) {
+        return districtRepository.findByDistrictName(name);
     }
 
 

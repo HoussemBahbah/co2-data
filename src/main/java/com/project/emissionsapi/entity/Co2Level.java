@@ -18,7 +18,7 @@ public class Co2Level {
     private String timestamp;
     @JsonManagedReference
     @ManyToOne
-    @JoinColumn(name="district_id")
+    @JoinColumn(name = "district_id")
     private District district;
 
 
@@ -39,9 +39,4 @@ public class Co2Level {
 
     public Co2Level() {
     }
-    //    @JsonIgnore
-//    @OneToMany(mappedBy = "city", cascade = CascadeType.REMOVE)
-   // private List<Client> clients;
-
-
 }

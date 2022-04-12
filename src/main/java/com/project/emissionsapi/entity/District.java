@@ -12,10 +12,10 @@ import java.util.List;
 @Entity
 public class District {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     private String districtName;
 
     @JsonManagedReference

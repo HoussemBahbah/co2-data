@@ -40,14 +40,8 @@ public class AuthController {
 	}
 
 
-
-
-
-
-
 	private void authenticate(String username, String password) throws Exception {
 		try {
-			System.out.println("here"+username+password);
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (BadCredentialsException e) {
 			throw new Exception("INVALID_CREDENTIALS", e);
