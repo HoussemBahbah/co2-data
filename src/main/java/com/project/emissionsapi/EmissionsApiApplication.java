@@ -52,7 +52,7 @@ public class EmissionsApiApplication {
             UserDetail barcelonaAdmin = new UserDetail();
             UserDetail wienAdmin = new UserDetail();
             addUser("barcelonaAdmin", barcelonaAdmin, Barcelona);
-            addUser("barcelonaAdmin", barcelonaAdmin, Barcelona);
+            addUser("wienAdmin", wienAdmin, Wien);
         };
     }
 

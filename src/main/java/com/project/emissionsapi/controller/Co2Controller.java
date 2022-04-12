@@ -51,7 +51,12 @@ public class Co2Controller {
 
     @GetMapping("/{all}")
     public List<Co2Level> findAll() {
-        return co2LevelService.findAll();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
+
+        City city = cityService.findByName(loggedInUser.getCity().getName());
+        return districtService.findByCity(city).stream().filter(district->district.getCity().getName().equals(city.getName())).map(District::getCo2Levels).flatMap(List::stream).collect(java.util.stream.Collectors.toList());
+
     }
 
     @RequestMapping(method = RequestMethod.GET)

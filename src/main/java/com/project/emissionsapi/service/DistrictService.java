@@ -46,7 +46,9 @@ public class DistrictService {
     public District findByCityAndName(City city, String name) {
         return districtRepository.findByCityAndDistrictName(city, name);
     }
-
+    public List<District> findByCity(City city){
+        return districtRepository.findByCity(city);
+    }
 
     public District findByName(String name) {
         return districtRepository.findByDistrictName(name);
