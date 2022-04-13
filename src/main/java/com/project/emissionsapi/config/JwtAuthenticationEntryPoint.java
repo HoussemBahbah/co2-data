@@ -18,6 +18,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException {
 
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Merci de vérifier votre email");
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Login Failed: Credentials Invalid");
 	}
 }

@@ -36,7 +36,16 @@ public class Co2Controller {
     private DistrictService districtService;
 
     @PutMapping
-    public MessageResponse update(@RequestBody Co2Level co2Level) {
+    public MessageResponse update(@RequestBody SensorData sensorData) {
+        City city = cityService.findByName(sensorData.getCityName());
+        District district = districtService.findByCityAndName(city, sensorData.getDistrictName());
+        Co2Level co2Level = new Co2Level(sensorData.getLevel(), sensorData.getTimestamp());
+        if(district!=null&&city!=null) {
+            co2Level.setDistrict(district);
+        }
+        else {
+            return new MessageResponse(false, "Error","Invalid city or district name please enter an existing city and district name");
+        }
         return co2LevelService.update(co2Level);
     }
 

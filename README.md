@@ -62,12 +62,24 @@ Logs:Backend loggs at the file "hexapark-logs.log" located as the same directory
 <br/>
 
 ## default data: <br/>
-Visualize class diagram: https://i.ibb.co/jk66qWJ/class.jpg <br/>
+Usernames:
+
+Barcelona: Gràcia, Eixample<br/>
+Wien: Währing, Penzing<br/>
+München: Maxvorstadt<br/>
 
 
 <br/>
 
 ## Github Repository for hexapark mobile version: <br/>
 Repo: https://github.com/houssembahbah-hexatribe/hexapark-mobile <br/>
+
+
+## Example of a CO2 reading to a given customer account
+
+This project runs on the port localhost 8080
+
+
+
 
 
