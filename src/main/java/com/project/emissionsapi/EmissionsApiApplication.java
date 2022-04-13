@@ -1,68 +1,94 @@
 package com.project.emissionsapi;
 
 import com.project.emissionsapi.entity.City;
+import com.project.emissionsapi.entity.District;
 import com.project.emissionsapi.entity.UserDetail;
 import com.project.emissionsapi.repositories.CityRepository;
+import com.project.emissionsapi.repositories.Co2LevelRepository;
+import com.project.emissionsapi.repositories.DistrictRepository;
 import com.project.emissionsapi.repositories.UserDetailRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+
 
 @SpringBootApplication
 
 public class EmissionsApiApplication {
 
+    @Autowired
+    private UserDetailRepository userDetailRepository;
+    @Autowired
+    private CityRepository cityRepository;
+    @Autowired
+    private DistrictRepository districtRepository;
+    @Autowired
+    private Co2LevelRepository co2LevelRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	public static void main(String[] args) {
-		SpringApplication.run(EmissionsApiApplication.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(EmissionsApiApplication.class, args);
 
-	}
+    }
 
-	@Component
-	@AllArgsConstructor
-	public class StartRunner implements ApplicationRunner {
+    @Bean
+    CommandLineRunner initializeData() {
+        return args -> {
+            City Barcelona = addCity("Barcelona");
+            District gracia = addDistrictToCity(new District("Gràcia"), Barcelona);
+            District eixample = addDistrictToCity(new District("Eixample"), Barcelona);
 
-		@Autowired
-		private UserDetailRepository userDetailRepository;
-		@Autowired
-		private CityRepository cityRepository;
-		@Autowired
-		private PasswordEncoder passwordEncoder;
+            City Wien = addCity("Wien");
+            addDistrictToCity(new District("Währing"), Wien);
+            addDistrictToCity(new District("Penzing"), Wien);
 
-		@Override
-		public void run(ApplicationArguments args) throws Exception {
+            City München = addCity("München");
+            addDistrictToCity(new District("Maxvorstadt"), München);
 
+            cityRepository.save(Barcelona);
+            cityRepository.save(Wien);
+            cityRepository.save(München);
 
-			String username="user";
-			UserDetail userDetail =new UserDetail();
-			City Barcelona=addCity("Barcelona","20","district6");
-			City Wien=addCity("Wien","30","district6");
-
-			boolean userExist = userDetailRepository.existsByUsername(username);
-			if (!userExist) {
-				userDetail.setUsername(username);
-				userDetail.setPassword(passwordEncoder.encode("password"));
-				userDetail.setCity(Barcelona);
-				userDetailRepository.save(userDetail);
-			}
-		}
+            UserDetail barcelonaAdmin = new UserDetail();
+            UserDetail wienAdmin = new UserDetail();
+            addUser("barcelonaAdmin", barcelonaAdmin, Barcelona);
+            addUser("wienAdmin", wienAdmin, Wien);
+        };
+    }
 
 
-		public City addCity(String name,String co2Level,String district){
-			City city=new City(name,co2Level,district);
-			boolean isCityExist=cityRepository.existsByName(city.getName());
-			if(!isCityExist){
-				cityRepository.save(city);
-			}
-			return city;
-		}
+    private District addDistrictToCity(District district, City city) {
+        boolean isDistrictExist = districtRepository.existsByDistrictNameIgnoreCase(district.getDistrictName());
+        if (!isDistrictExist) {
+            district.setCity(city);
+            city.getDistricts().add(district);
+            districtRepository.save(district);
+            cityRepository.save(city);
+        }
+        return districtRepository.findByDistrictNameIgnoreCase(district.getDistrictName());
+    }
 
-	}
+    private void addUser(String username, UserDetail userDetail, City city) {
+        boolean userExist = userDetailRepository.existsByUsernameIgnoreCase(username);
+        if (!userExist) {
+            userDetail.setUsername(username);
+            userDetail.setPassword(passwordEncoder.encode("password"));
+            userDetail.setCity(city);
+            userDetailRepository.save(userDetail);
+        }
+    }
+
+    public City addCity(String name) {
+        City city = new City(name);
+        boolean isCityExist = cityRepository.existsByNameIgnoreCase(city.getName());
+        if (!isCityExist) {
+            cityRepository.save(city);
+        }
+        return cityRepository.findByNameIgnoreCase(name);
+    }
 
 }
