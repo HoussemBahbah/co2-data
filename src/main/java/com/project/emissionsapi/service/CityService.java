@@ -39,7 +39,7 @@ public class CityService {
     }
 
     public City findByName(String name) {
-        return cityRepository.findByName(name);
+        return cityRepository.findByNameIgnoreCase(name);
     }
 
     public List<City> findAll() {

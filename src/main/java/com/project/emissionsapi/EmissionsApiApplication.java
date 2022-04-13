@@ -58,18 +58,18 @@ public class EmissionsApiApplication {
 
 
     private District addDistrictToCity(District district, City city) {
-        boolean isDistrictExist = districtRepository.existsByDistrictName(district.getDistrictName());
+        boolean isDistrictExist = districtRepository.existsByDistrictNameIgnoreCase(district.getDistrictName());
         if (!isDistrictExist) {
             district.setCity(city);
             city.getDistricts().add(district);
             districtRepository.save(district);
             cityRepository.save(city);
         }
-        return districtRepository.findByDistrictName(district.getDistrictName());
+        return districtRepository.findByDistrictNameIgnoreCase(district.getDistrictName());
     }
 
     private void addUser(String username, UserDetail userDetail, City city) {
-        boolean userExist = userDetailRepository.existsByUsername(username);
+        boolean userExist = userDetailRepository.existsByUsernameIgnoreCase(username);
         if (!userExist) {
             userDetail.setUsername(username);
             userDetail.setPassword(passwordEncoder.encode("password"));
@@ -80,11 +80,11 @@ public class EmissionsApiApplication {
 
     public City addCity(String name) {
         City city = new City(name);
-        boolean isCityExist = cityRepository.existsByName(city.getName());
+        boolean isCityExist = cityRepository.existsByNameIgnoreCase(city.getName());
         if (!isCityExist) {
             cityRepository.save(city);
         }
-        return cityRepository.findByName(name);
+        return cityRepository.findByNameIgnoreCase(name);
     }
 
 }

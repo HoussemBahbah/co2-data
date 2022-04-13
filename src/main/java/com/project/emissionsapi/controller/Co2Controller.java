@@ -11,9 +11,10 @@ import com.project.emissionsapi.service.Co2LevelService;
 import com.project.emissionsapi.service.DistrictService;
 import com.project.emissionsapi.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 
@@ -64,7 +65,13 @@ public class Co2Controller {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
         City city = cityService.findByName(loggedInUser.getCity().getName());
-        return districtService.findByCityAndName(city, districtName).getCo2Levels();
+        try {
+            return districtService.findByCityAndName(city, districtName).getCo2Levels();
+         } catch (RuntimeException exc) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "District Not Found please enter an existing district name existing in the city " +city.getName());
+        }
+
     }
 
 
@@ -73,16 +80,19 @@ public class Co2Controller {
         return co2LevelService.findById(id);
     }
 
-
     @PostMapping
     public MessageResponse save(@RequestBody SensorData sensorData) {
-        City city = cityService.findByName(sensorData.getCityName());
-        District district = districtService.findByCityAndName(city, sensorData.getDistrictName());
-        Co2Level co2Level = new Co2Level(sensorData.getLevel(), sensorData.getTimestamp());
-        System.out.println(sensorData);
-        co2Level.setDistrict(district);
-        return co2LevelService.save(co2Level);
 
+            City city = cityService.findByName(sensorData.getCityName());
+            District district = districtService.findByCityAndName(city, sensorData.getDistrictName());
+            Co2Level co2Level = new Co2Level(sensorData.getLevel(), sensorData.getTimestamp());
+            if(district!=null&&city!=null) {
+                co2Level.setDistrict(district);
+            }
+            else {
+                return new MessageResponse(false, "Error","Invalid city or district name please enter an existing city and district name");
+            }
+            return co2LevelService.save(co2Level);
     }
 
 }
