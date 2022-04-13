@@ -39,15 +39,19 @@ public class EmissionsApiApplication {
     CommandLineRunner initializeData() {
         return args -> {
             City Barcelona = addCity("Barcelona");
-            District gracia = addDistrictToCity(new District("Gracia"), Barcelona);
+            District gracia = addDistrictToCity(new District("Gràcia"), Barcelona);
             District eixample = addDistrictToCity(new District("Eixample"), Barcelona);
 
             City Wien = addCity("Wien");
             addDistrictToCity(new District("Währing"), Wien);
             addDistrictToCity(new District("Penzing"), Wien);
 
+            City München = addCity("München");
+            addDistrictToCity(new District("Maxvorstadt"), München);
+
             cityRepository.save(Barcelona);
             cityRepository.save(Wien);
+            cityRepository.save(München);
 
             UserDetail barcelonaAdmin = new UserDetail();
             UserDetail wienAdmin = new UserDetail();

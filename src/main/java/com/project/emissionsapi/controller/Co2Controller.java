@@ -35,11 +35,6 @@ public class Co2Controller {
     @Autowired
     private DistrictService districtService;
 
-//        @PostMapping
-//        public MessageResponse save(@RequestBody Co2Level co2Level) {
-//            return co2LevelService.save(co2Level);
-//        }
-
     @PutMapping
     public MessageResponse update(@RequestBody Co2Level co2Level) {
         return co2LevelService.update(co2Level);
@@ -50,7 +45,7 @@ public class Co2Controller {
         return co2LevelService.delete(id);
     }
 
-    @GetMapping("/{all}")
+    @GetMapping("/all")
     public List<Co2Level> findAll() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
@@ -61,7 +56,7 @@ public class Co2Controller {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Co2Level> findByCity(@RequestParam(value = "districtName") String districtName) {
+    public List<Co2Level> findByDistrict(@RequestParam(value = "districtName") String districtName) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
         City city = cityService.findByName(loggedInUser.getCity().getName());
