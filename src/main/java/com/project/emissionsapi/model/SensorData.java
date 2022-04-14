@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class SensorData {
 
     private String level;
-    private @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd' 'HH:mm:ss")
+    private @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     LocalDateTime timestamp;
     private String cityName;
     private String districtName;

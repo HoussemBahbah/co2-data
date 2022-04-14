@@ -79,10 +79,6 @@ public class Co2Controller {
     }
 
 
-    @GetMapping("/{id}")
-    public Co2Level findById(@PathVariable Long id) {
-        return co2LevelService.findById(id);
-    }
 
     @PostMapping
     public MessageResponse save(@RequestBody SensorData sensorData) {
