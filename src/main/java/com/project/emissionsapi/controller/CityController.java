@@ -24,20 +24,6 @@ public class CityController {
     @Autowired
     private UserDetailService userDetailService;
 
-    @PostMapping
-    public MessageResponse save(@RequestBody City city) {
-        return cityService.save(city);
-    }
-
-    @PutMapping
-    public MessageResponse update(@RequestBody City city) {
-        return cityService.update(city);
-    }
-
-    @DeleteMapping("/{id}")
-    public MessageResponse delete(@PathVariable Long id) {
-        return cityService.delete(id);
-    }
 
     @GetMapping
     public City findOne() {

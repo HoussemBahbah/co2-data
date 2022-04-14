@@ -2,9 +2,6 @@ package com.project.emissionsapi.service;
 
 
 import com.project.emissionsapi.entity.UserDetail;
-import com.project.emissionsapi.entity.UserDetail;
-import com.project.emissionsapi.entity.UserDetail;
-import com.project.emissionsapi.entity.UserDetail;
 import com.project.emissionsapi.model.MessageResponse;
 import com.project.emissionsapi.repositories.UserDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;

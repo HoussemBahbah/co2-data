@@ -19,16 +19,16 @@ public class City {
     private String name;
 
 
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "city", cascade = CascadeType.REMOVE)
-//    private List<UserDetail> userDetail;
-
     @JsonBackReference
     @OneToMany(mappedBy = "city", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<District> districts;
 
     public City(String name) {
         this.name = name;
+    }
+
+    public void addDistrict(District district) {
+        this.districts.add(district);
     }
 
     @Override
