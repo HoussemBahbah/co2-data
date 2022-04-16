@@ -18,7 +18,7 @@ public class Co2Level {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String level;
-    private @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+    private @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime timestamp;
     @JsonManagedReference
     @ManyToOne

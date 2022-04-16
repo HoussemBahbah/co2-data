@@ -53,7 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
 		httpSecurity.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
-		// httpSecurity.authorizeRequests().antMatchers(HttpMethod.GET, .permitAll();
 	}
 
 	@Override

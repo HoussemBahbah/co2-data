@@ -18,35 +18,35 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @CrossOrigin("*")
 public class AuthController {
-	@Autowired
-	private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
-	@Autowired
-	private CityAdminService userDetailsService;
+    @Autowired
+    private CityAdminService userDetailsService;
 
-	@PostMapping("/login")
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRequest authenticationRequest)
-			throws Exception {
-		CityAdmin userDetails;
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-		userDetails = (CityAdmin) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-		String token = jwtTokenUtil.generateToken(userDetails);
+    @PostMapping("/login")
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRequest authenticationRequest)
+            throws Exception {
+        CityAdmin userDetails;
+        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        userDetails = (CityAdmin) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        String token = jwtTokenUtil.generateToken(userDetails);
 
-		return ResponseEntity.ok(new LoginResponse(token));
+        return ResponseEntity.ok(new LoginResponse(token));
 
-	}
+    }
 
 
-	private void authenticate(String username, String password) throws Exception {
-		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
-		} catch (DisabledException e) {
-			throw new Exception("USER_DISABLED", e);
-		}
-	}
+    private void authenticate(String username, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        }
+    }
 }
