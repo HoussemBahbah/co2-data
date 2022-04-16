@@ -2,11 +2,11 @@ package com.project.emissionsapi;
 
 import com.project.emissionsapi.entity.City;
 import com.project.emissionsapi.entity.District;
-import com.project.emissionsapi.entity.UserDetail;
+import com.project.emissionsapi.entity.CityAdmin;
 import com.project.emissionsapi.repositories.CityRepository;
 import com.project.emissionsapi.repositories.Co2LevelRepository;
 import com.project.emissionsapi.repositories.DistrictRepository;
-import com.project.emissionsapi.repositories.UserDetailRepository;
+import com.project.emissionsapi.repositories.CityAdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class EmissionsApiApplication {
 
     @Autowired
-    private UserDetailRepository userDetailRepository;
+    private CityAdminRepository cityAdminRepository;
     @Autowired
     private CityRepository cityRepository;
     @Autowired
@@ -53,8 +53,8 @@ public class EmissionsApiApplication {
             cityRepository.save(Wien);
             cityRepository.save(München);
 
-            UserDetail barcelonaAdmin = new UserDetail();
-            UserDetail wienAdmin = new UserDetail();
+            CityAdmin barcelonaAdmin = new CityAdmin();
+            CityAdmin wienAdmin = new CityAdmin();
             addUser("barcelonaAdmin", barcelonaAdmin, Barcelona);
             addUser("wienAdmin", wienAdmin, Wien);
         };
@@ -72,13 +72,13 @@ public class EmissionsApiApplication {
         return districtRepository.findByDistrictNameIgnoreCase(district.getDistrictName());
     }
 
-    private void addUser(String username, UserDetail userDetail, City city) {
-        boolean userExist = userDetailRepository.existsByUsernameIgnoreCase(username);
+    private void addUser(String username, CityAdmin cityAdmin, City city) {
+        boolean userExist = cityAdminRepository.existsByUsernameIgnoreCase(username);
         if (!userExist) {
-            userDetail.setUsername(username);
-            userDetail.setPassword(passwordEncoder.encode("password"));
-            userDetail.setCity(city);
-            userDetailRepository.save(userDetail);
+            cityAdmin.setUsername(username);
+            cityAdmin.setPassword(passwordEncoder.encode("password"));
+            cityAdmin.setCity(city);
+            cityAdminRepository.save(cityAdmin);
         }
     }
 

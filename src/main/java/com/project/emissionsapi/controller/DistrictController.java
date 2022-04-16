@@ -2,16 +2,15 @@ package com.project.emissionsapi.controller;
 
 import com.project.emissionsapi.entity.City;
 import com.project.emissionsapi.entity.District;
-import com.project.emissionsapi.entity.UserDetail;
+import com.project.emissionsapi.entity.CityAdmin;
 import com.project.emissionsapi.model.MessageResponse;
 import com.project.emissionsapi.service.CityService;
 import com.project.emissionsapi.service.DistrictService;
-import com.project.emissionsapi.service.UserDetailService;
+import com.project.emissionsapi.service.CityAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -26,14 +25,14 @@ public class DistrictController {
     private CityService cityService;
 
     @Autowired
-    private UserDetailService userDetailService;
+    private CityAdminService cityAdminService;
 
 
     @PostMapping
     public MessageResponse save(@RequestParam(value = "districtName") String districtName) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
+        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
         City city = cityService.findByName(loggedInUser.getCity().getName());
         District district=new District(districtName);
         district.setCity(city);
@@ -63,7 +62,7 @@ public class DistrictController {
     @GetMapping("/cityDistricts")
     public List<District> currentCityDistricts() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
+        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
         City city = cityService.findByName(loggedInUser.getCity().getName());
         return city.getDistricts();
     }

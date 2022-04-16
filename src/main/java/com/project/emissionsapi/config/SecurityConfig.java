@@ -1,6 +1,6 @@
 package com.project.emissionsapi.config;
 
-import com.project.emissionsapi.service.UserDetailService;
+import com.project.emissionsapi.service.CityAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JwtAuthorizationFilter jwtAuthorizationFilter;
 	@Autowired
-	private UserDetailService userService;
+	private CityAdminService userService;
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		// auth.authenticationProvider(authenticationProvider)
