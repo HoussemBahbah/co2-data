@@ -26,20 +26,21 @@ public class CityController {
 
 
     @GetMapping
-    public City findOne() {
+    public City findAdminCity() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
         return cityService.findByName(loggedInUser.getCity().getName());
     }
 
     @GetMapping("/all")
-    public List<City> findAll() {
+    public List<City> findAllCities() {
         return cityService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public City findById(@PathVariable Long id) {
-        return cityService.findById(id);
+    @GetMapping("/")
+    public City findByCityName(@RequestParam(value = "cityName") String cityName) {
+        return cityService.findByName(cityName);
     }
+
 
 }
