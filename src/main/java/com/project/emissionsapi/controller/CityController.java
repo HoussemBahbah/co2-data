@@ -1,11 +1,9 @@
 package com.project.emissionsapi.controller;
 
 import com.project.emissionsapi.entity.City;
-import com.project.emissionsapi.entity.UserDetail;
-import com.project.emissionsapi.model.MessageResponse;
-import com.project.emissionsapi.repositories.UserDetailRepository;
+import com.project.emissionsapi.entity.CityAdmin;
 import com.project.emissionsapi.service.CityService;
-import com.project.emissionsapi.service.UserDetailService;
+import com.project.emissionsapi.service.CityAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +20,13 @@ public class CityController {
     private CityService cityService;
 
     @Autowired
-    private UserDetailService userDetailService;
+    private CityAdminService cityAdminService;
 
 
     @GetMapping
     public City findAdminCity() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
+        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
         return cityService.findByName(loggedInUser.getCity().getName());
     }
 

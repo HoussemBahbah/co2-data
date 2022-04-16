@@ -3,13 +3,13 @@ package com.project.emissionsapi.controller;
 import com.project.emissionsapi.entity.City;
 import com.project.emissionsapi.entity.Co2Level;
 import com.project.emissionsapi.entity.District;
-import com.project.emissionsapi.entity.UserDetail;
+import com.project.emissionsapi.entity.CityAdmin;
 import com.project.emissionsapi.model.MessageResponse;
 import com.project.emissionsapi.model.SensorData;
 import com.project.emissionsapi.service.CityService;
 import com.project.emissionsapi.service.Co2LevelService;
 import com.project.emissionsapi.service.DistrictService;
-import com.project.emissionsapi.service.UserDetailService;
+import com.project.emissionsapi.service.CityAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +30,7 @@ public class Co2Controller {
     private CityService cityService;
 
     @Autowired
-    private UserDetailService userDetailService;
+    private CityAdminService cityAdminService;
 
     @Autowired
     private DistrictService districtService;
@@ -60,7 +60,7 @@ public class Co2Controller {
     @GetMapping("/all")
     public List<Co2Level> findAll() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
+        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
 
         City city = cityService.findByName(loggedInUser.getCity().getName());
         return districtService.findByCity(city).stream().filter(district->district.getCity().getName().equals(city.getName())).map(District::getCo2Levels).flatMap(List::stream).collect(java.util.stream.Collectors.toList());
@@ -70,7 +70,7 @@ public class Co2Controller {
     @RequestMapping(method = RequestMethod.GET)
     public List<Co2Level> findByDistrict(@RequestParam(value = "districtName") String districtName) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
+        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
         City city = cityService.findByName(loggedInUser.getCity().getName());
         try {
             return districtService.findByCityAndName(city, districtName).getCo2Levels();

@@ -1,6 +1,6 @@
 package com.project.emissionsapi.config;
 
-import com.project.emissionsapi.service.UserDetailService;
+import com.project.emissionsapi.service.CityAdminService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ import java.io.IOException;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private UserDetailService usersService;
+	private CityAdminService usersService;
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 

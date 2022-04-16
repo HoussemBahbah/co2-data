@@ -16,7 +16,7 @@ import java.util.List;
 @DynamicUpdate
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class UserDetail implements UserDetails {
+public class CityAdmin implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,12 +31,12 @@ public class UserDetail implements UserDetails {
     @JoinColumn(name = "city_id")
     private City city;
 
-    public UserDetail(String username, String password) {
+    public CityAdmin(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public UserDetail() {
+    public CityAdmin() {
     }
 
     @JsonIgnore

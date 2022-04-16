@@ -130,7 +130,8 @@ POST on endpoint /api/co2Level to save the data of a new co2Level reading exampl
 curl -X POST "http://localhost:8080/api/co2Level" -H "accept: */*" -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYXJjZWxvbmFBZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNjQ5ODk4MzAyLCJleHAiOjE2NDk5MjcxMDJ9.ao8bfa9A0bqdORgmcYvVueC3heLUNQ2Zzf1HnEys2-QK8QEdmwu3pU5k7wzzXpVrtBCfRkkGCndR6qLNlQJTFQ" -H "Content-Type: application/json" -d "{ \"cityName\": \"barcelona\", \"districtName\": \"Gràcia\", \"level\": \"60\", \"timestamp\": \"2021-12-11 12:15:20\"}"
 ```
 
-Note: we suppose that the sensors send the date on the format: yyyy-MM-dd HH:mm:ss<br/>
+Notes: we suppose that the sensors send the date on the format: yyyy-MM-dd HH:mm:ss<br/>
 Each city admin can check CO2 concentration historical data per district/all only for the city in which the admin is associated.
 
+-All search operations are not case-sensitive.
 
