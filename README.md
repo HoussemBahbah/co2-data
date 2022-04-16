@@ -1,8 +1,8 @@
 # co2 Levels API Readme File
 
-## DATABASE 
+## Database
 
-In this API project I used sqlite so there is no need to connect to a specific database, a file /database.db is created by default (when it does not exist), if you wish deleting the whole database of the project you can delete the file /database.db and another one will be created automatically during the next launch. 
+In this API project  SQLite is used to store the data, there is no need to connect to a specific database, a file /database.db is automatically created by default (when it does not exist), if you wish deleting the whole database of the project you can delete the file /database.db and another one will be created automatically during the next launch. 
 
 ## Starting the project
 
@@ -39,10 +39,21 @@ curl -X GET "http://localhost:8080/api/co2Level/all" -H "accept: */*" -H "Author
 
 ## Models and Entities
 
-
+Entities:<br/>
+-City: A city has an id,name, one city can have many district.<br/>
+-District: A district has an id,name,a city which is associated to, and the list of Co2Level records.<br/>
+-Co2Level:A Co2Level record has an id,level,timestamp and the district which belongs to.<br/>
+-UserDetail:Represents a city admin has a username, password, a user belongs to 1 city and can see only the CO2Level records of the districts belonging to the city.<br/>
+Models:<br/>
+SensorData: A model facilitates the data registration for a Co2Level record.<br/>
 
 
 ## Endpoint Definition
+To view all endpoints definition please go on http://localhost:8080/swagger-ui.html to view and tryout on swagger.<br/>
+OR<br/>
+Link to:[ Endpoints-definition.md](Endpoints-definition.md) to read the API endpoints documentation<br/>
+<br/>
+Few examples on curl:<br/> 
 
 Save a co2Level of a district: 
 
@@ -62,8 +73,6 @@ Get all c2Levels of the city:
 ```bash 
 curl -X GET "http://localhost:8080/api/co2Level/all" -H "accept: */*" -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYXJjZWxvbmFBZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNjQ5OTAwMDE0LCJleHAiOjE2NDk5Mjg4MTR9.xvCOMAM6VTxOeYhB0GfFQyNStb3GJJiBrdavx4vg1caqElBvDgsDAj5lUxuqglInqLVOUgY2rb2g98MiV1WbaA"
 ```
-
-For the rest of endpoints please check swagger page: http://localhost:8080/swagger-ui.html
 
 ## Swagger Usage
 
@@ -89,7 +98,11 @@ Default Wien admin:wienAdmin   password:password
 
 
 ## Default data: <br/>
-Usernames:
+Username:wienAdmin<br/>
+password:password
+
+Username:barcelonaAdmin<br/>
+password:password
 
 Barcelona: Gràcia, Eixample<br/>
 Wien: Währing, Penzing<br/>
