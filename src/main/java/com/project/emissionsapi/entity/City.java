@@ -12,12 +12,10 @@ import java.util.List;
 @Entity
 public class City {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-
 
     @JsonBackReference
     @OneToMany(mappedBy = "city", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)

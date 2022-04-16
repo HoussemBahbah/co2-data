@@ -1,7 +1,6 @@
 package com.project.emissionsapi.model;
 
 
-
 public class MessageResponse {
 
     private boolean success;

@@ -20,7 +20,7 @@ public class District {
 
     @JsonManagedReference
     @ManyToOne
-    @JoinColumn(name="city_id")
+    @JoinColumn(name = "city_id")
     private City city;
 
     @JsonBackReference

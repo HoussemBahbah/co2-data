@@ -10,6 +10,7 @@ import com.project.emissionsapi.service.CityAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 
@@ -34,7 +35,7 @@ public class DistrictController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
         City city = cityService.findByName(loggedInUser.getCity().getName());
-        District district=new District(districtName);
+        District district = new District(districtName);
         district.setCity(city);
         city.addDistrict(district);
         cityService.save(city);
@@ -42,8 +43,8 @@ public class DistrictController {
     }
 
     @PutMapping
-    public MessageResponse update(@RequestParam(value = "districtName") String districtName,@RequestParam(value = "newDistrictName") String newDistrictName) {
-        District district =districtService.findByName(districtName);
+    public MessageResponse update(@RequestParam(value = "districtName") String districtName, @RequestParam(value = "newDistrictName") String newDistrictName) {
+        District district = districtService.findByName(districtName);
         district.setDistrictName(newDistrictName);
         return districtService.update(district);
     }
@@ -69,7 +70,7 @@ public class DistrictController {
 
 
     @GetMapping("/")
-    public District findByDistrictName(@RequestParam(value = "districtName") String districtName)  {
+    public District findByDistrictName(@RequestParam(value = "districtName") String districtName) {
         return districtService.findByName(districtName);
     }
 

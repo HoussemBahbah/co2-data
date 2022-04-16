@@ -4,7 +4,7 @@ package com.project.emissionsapi.controller;
 import org.springframework.web.bind.annotation.*;
 
 
-
+//Only For test purposes
 @RestController
     @RequestMapping("api/cityAdmin")
     @CrossOrigin("*")

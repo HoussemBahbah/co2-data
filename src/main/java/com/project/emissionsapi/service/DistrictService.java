@@ -46,7 +46,8 @@ public class DistrictService {
     public District findByCityAndName(City city, String name) {
         return districtRepository.findByCityAndDistrictNameIgnoreCase(city, name);
     }
-    public List<District> findByCity(City city){
+
+    public List<District> findByCity(City city) {
         return districtRepository.findByCity(city);
     }
 

@@ -9,8 +9,11 @@ import java.util.List;
 
 public interface DistrictRepository extends JpaRepository<District, Long> {
 
-        List<District> findByCity(City city);
-        District findByCityAndDistrictNameIgnoreCase(City city, String name);
-        boolean existsByDistrictNameIgnoreCase(String string);
-        District findByDistrictNameIgnoreCase(String string);
+    List<District> findByCity(City city);
+
+    District findByCityAndDistrictNameIgnoreCase(City city, String name);
+
+    boolean existsByDistrictNameIgnoreCase(String string);
+
+    District findByDistrictNameIgnoreCase(String string);
 }

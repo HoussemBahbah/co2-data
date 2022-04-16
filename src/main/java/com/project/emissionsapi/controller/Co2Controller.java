@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 
@@ -36,18 +37,17 @@ public class Co2Controller {
     private DistrictService districtService;
 
     @PutMapping
-    public MessageResponse update(@RequestParam(value = "id") Long id,@RequestBody SensorData sensorData) {
+    public MessageResponse update(@RequestParam(value = "id") Long id, @RequestBody SensorData sensorData) {
         Co2Level co2Level = co2LevelService.findById(id);
         co2Level.setLevel(sensorData.getLevel());
         City city = cityService.findByName(sensorData.getCityName());
         District district = districtService.findByCityAndName(city, sensorData.getDistrictName());
         co2Level.setDistrict(district);
         co2Level.setTimestamp(sensorData.getTimestamp());
-        if(district!=null&&city!=null) {
+        if (district != null && city != null) {
             co2Level.setDistrict(district);
-        }
-        else {
-            return new MessageResponse(false, "Error","Invalid city or district name please enter an existing city and district name");
+        } else {
+            return new MessageResponse(false, "Error", "Invalid city or district name please enter an existing city and district name");
         }
         return co2LevelService.update(co2Level);
     }
@@ -63,7 +63,7 @@ public class Co2Controller {
         CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
 
         City city = cityService.findByName(loggedInUser.getCity().getName());
-        return districtService.findByCity(city).stream().filter(district->district.getCity().getName().equals(city.getName())).map(District::getCo2Levels).flatMap(List::stream).collect(java.util.stream.Collectors.toList());
+        return districtService.findByCity(city).stream().filter(district -> district.getCity().getName().equals(city.getName())).map(District::getCo2Levels).flatMap(List::stream).collect(java.util.stream.Collectors.toList());
 
     }
 
@@ -74,28 +74,26 @@ public class Co2Controller {
         City city = cityService.findByName(loggedInUser.getCity().getName());
         try {
             return districtService.findByCityAndName(city, districtName).getCo2Levels();
-         } catch (RuntimeException exc) {
+        } catch (RuntimeException exc) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "District Not Found please enter an existing district name existing in the city " +city.getName());
+                    HttpStatus.NOT_FOUND, "District Not Found please enter an existing district name existing in the city " + city.getName());
         }
 
     }
 
 
-
     @PostMapping
     public MessageResponse save(@RequestBody SensorData sensorData) {
 
-            City city = cityService.findByName(sensorData.getCityName());
-            District district = districtService.findByCityAndName(city, sensorData.getDistrictName());
-            Co2Level co2Level = new Co2Level(sensorData.getLevel(), sensorData.getTimestamp());
-            if(district!=null&&city!=null) {
-                co2Level.setDistrict(district);
-            }
-            else {
-                return new MessageResponse(false, "Error","Invalid city or district name please enter an existing city and district name");
-            }
-            return co2LevelService.save(co2Level);
+        City city = cityService.findByName(sensorData.getCityName());
+        District district = districtService.findByCityAndName(city, sensorData.getDistrictName());
+        Co2Level co2Level = new Co2Level(sensorData.getLevel(), sensorData.getTimestamp());
+        if (district != null && city != null) {
+            co2Level.setDistrict(district);
+        } else {
+            return new MessageResponse(false, "Error", "Invalid city or district name please enter an existing city and district name");
+        }
+        return co2LevelService.save(co2Level);
     }
 
 }
