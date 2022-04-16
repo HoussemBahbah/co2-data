@@ -36,10 +36,13 @@ public class Co2Controller {
     private DistrictService districtService;
 
     @PutMapping
-    public MessageResponse update(@RequestBody SensorData sensorData) {
+    public MessageResponse update(@RequestParam(value = "id") Long id,@RequestBody SensorData sensorData) {
+        Co2Level co2Level = co2LevelService.findById(id);
+        co2Level.setLevel(sensorData.getLevel());
         City city = cityService.findByName(sensorData.getCityName());
         District district = districtService.findByCityAndName(city, sensorData.getDistrictName());
-        Co2Level co2Level = new Co2Level(sensorData.getLevel(), sensorData.getTimestamp());
+        co2Level.setDistrict(district);
+        co2Level.setTimestamp(sensorData.getTimestamp());
         if(district!=null&&city!=null) {
             co2Level.setDistrict(district);
         }

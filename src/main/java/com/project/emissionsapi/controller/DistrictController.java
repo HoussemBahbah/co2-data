@@ -43,15 +43,9 @@ public class DistrictController {
     }
 
     @PutMapping
-    public MessageResponse update(@RequestParam(value = "districtName") String districtName) {
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
-        City city = cityService.findByName(loggedInUser.getCity().getName());
-        District district=new District(districtName);
-        district.setCity(city);
-        city.addDistrict(district);
-        cityService.save(city);
+    public MessageResponse update(@RequestParam(value = "districtName") String districtName,@RequestParam(value = "newDistrictName") String newDistrictName) {
+        District district =districtService.findByName(districtName);
+        district.setDistrictName(newDistrictName);
         return districtService.update(district);
     }
 
@@ -60,14 +54,24 @@ public class DistrictController {
         return districtService.delete(id);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<District> findAll() {
         return districtService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public District findById(@PathVariable Long id) {
-        return districtService.findById(id);
+
+    @GetMapping("/cityDistricts")
+    public List<District> currentCityDistricts() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserDetail loggedInUser = (UserDetail) userDetailService.loadUserByUsername(username);
+        City city = cityService.findByName(loggedInUser.getCity().getName());
+        return city.getDistricts();
+    }
+
+
+    @GetMapping("/")
+    public District findByDistrictName(@RequestParam(value = "districtName") String districtName)  {
+        return districtService.findByName(districtName);
     }
 
 }

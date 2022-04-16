@@ -36,6 +36,12 @@ curl -X GET "http://localhost:8080/api/co2Level/all" -H "accept: */*" -H "Author
 ```
 <br/>
 
+
+## Models and Entities
+
+
+
+
 ## Endpoint Definition
 
 Save a co2Level of a district: 
