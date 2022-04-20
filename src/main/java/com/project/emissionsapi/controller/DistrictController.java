@@ -32,15 +32,9 @@ public class DistrictController {
     @PostMapping
     public MessageResponse save(@RequestParam(value = "districtName") String districtName) {
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
-        City city = cityService.findByName(loggedInUser.getCity().getName());
-        District district = new District(districtName);
-        district.setCity(city);
-        city.addDistrict(district);
-        cityService.save(city);
-        return districtService.save(district);
+        return districtService.createDistrict(districtName);
     }
+
 
     @PutMapping
     public MessageResponse update(@RequestParam(value = "districtName") String districtName, @RequestParam(value = "newDistrictName") String newDistrictName) {
@@ -62,10 +56,7 @@ public class DistrictController {
 
     @GetMapping("/cityDistricts")
     public List<District> currentCityDistricts() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
-        City city = cityService.findByName(loggedInUser.getCity().getName());
-        return city.getDistricts();
+        return districtService.getCurrentCityDistricts();
     }
 
 

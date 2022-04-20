@@ -1,9 +1,11 @@
 package com.project.emissionsapi.service;
 
 import com.project.emissionsapi.entity.City;
+import com.project.emissionsapi.entity.CityAdmin;
 import com.project.emissionsapi.model.MessageResponse;
 import com.project.emissionsapi.repositories.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,8 @@ public class CityService {
 
     @Autowired
     private CityRepository cityRepository;
+    @Autowired
+    private CityAdminService cityAdminService;
 
     public MessageResponse save(City city) {
         boolean exist = cityRepository.existsById((city.getId()));
@@ -32,6 +36,12 @@ public class CityService {
     public MessageResponse delete(Long id) {
         cityRepository.deleteById(id);
         return new MessageResponse(true, "Success", "Backend responded delete ok");
+    }
+
+    public City getCurrentCity() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
+        return findByName(loggedInUser.getCity().getName());
     }
 
     public City findById(Long id) {
