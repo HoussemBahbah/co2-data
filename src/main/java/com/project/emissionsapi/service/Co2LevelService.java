@@ -33,8 +33,7 @@ public class Co2LevelService {
             return new MessageResponse(false, "Not Success", "Existing");
         }
         co2LevelRepository.save(co2Level);
-        return new MessageResponse(true, "Success", "Backend responded save ok");
-
+        return new MessageResponse(true, "Success", "The request has been processed successfully");
     }
 
     public MessageResponse saveSensorData(SensorData sensorData) {
@@ -50,11 +49,11 @@ public class Co2LevelService {
     }
 
     public MessageResponse updateSensorData(Long id, SensorData sensorData) {
-        Co2Level co2Level = co2LevelService.findById(id);
-        co2Level.setLevel(sensorData.getLevel());
+        Co2Level co2Level = findById(id);
         City city = cityService.findByName(sensorData.getCityName());
         District district = districtService.findByCityAndName(city, sensorData.getDistrictName());
         co2Level.setDistrict(district);
+        co2Level.setLevel(sensorData.getLevel());
         co2Level.setTimestamp(sensorData.getTimestamp());
         if (district != null && city != null) {
             co2Level.setDistrict(district);
@@ -66,13 +65,12 @@ public class Co2LevelService {
 
     public MessageResponse update(Co2Level co2Level) {
         co2LevelRepository.save(co2Level);
-        return new MessageResponse(true, "Success", "Backend responded update  ok");
+        return new MessageResponse(true, "Success", "The update request has been processed successfully");
     }
 
     public MessageResponse delete(Long id) {
         co2LevelRepository.deleteById(id);
-        return new MessageResponse(true, "Success", "Backend responded delete ok");
-
+        return new MessageResponse(true, "Success", "The delete request has been processed successfully");
     }
 
     public Co2Level findById(Long id) {
@@ -86,7 +84,6 @@ public class Co2LevelService {
     public List<Co2Level> findAllByCurrentCity() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
-
         City city = cityService.findByName(loggedInUser.getCity().getName());
         return districtService.findByCity(city).stream().filter(district -> district.getCity().getName().equals(city.getName())).map(District::getCo2Levels).flatMap(List::stream).collect(java.util.stream.Collectors.toList());
     }

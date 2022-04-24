@@ -1,16 +1,12 @@
 package com.project.emissionsapi.controller;
 
-import com.project.emissionsapi.entity.City;
 import com.project.emissionsapi.entity.District;
-import com.project.emissionsapi.entity.CityAdmin;
 import com.project.emissionsapi.model.MessageResponse;
 import com.project.emissionsapi.service.CityService;
 import com.project.emissionsapi.service.DistrictService;
 import com.project.emissionsapi.service.CityAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
@@ -43,9 +39,10 @@ public class DistrictController {
         return districtService.update(district);
     }
 
-    @DeleteMapping("/{id}")
-    public MessageResponse delete(@PathVariable Long id) {
-        return districtService.delete(id);
+    @DeleteMapping
+    public MessageResponse delete(@RequestParam(value = "districtName") String districtName) {
+        District district = districtService.findByName(districtName);
+        return districtService.delete(district.getId());
     }
 
     @GetMapping("/all")

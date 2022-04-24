@@ -5,7 +5,6 @@ import com.project.emissionsapi.service.CityService;
 import com.project.emissionsapi.service.CityAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
@@ -24,7 +23,6 @@ public class CityController {
     public City findAdminCity() {
         return cityService.getCurrentCity();
     }
-
 
     @GetMapping("/all")
     public List<City> findAllCities() {

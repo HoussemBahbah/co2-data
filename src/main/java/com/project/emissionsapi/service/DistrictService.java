@@ -16,8 +16,10 @@ public class DistrictService {
 
     @Autowired
     private DistrictRepository districtRepository;
+
     @Autowired
     private CityAdminService cityAdminService;
+
     @Autowired
     private CityService cityService;
 
@@ -36,24 +38,19 @@ public class DistrictService {
         boolean exist = districtRepository.existsById((district.getId()));
         if (exist) {
             return new MessageResponse(false, "Not Success", "Existing");
-
         }
         districtRepository.save(district);
-        return new MessageResponse(true, "Success", "Backend responded save ok");
-
+        return new MessageResponse(true, "Success", "The request has been processed successfully");
     }
 
     public MessageResponse update(District district) {
-
         districtRepository.save(district);
-        return new MessageResponse(true, "Success", "Backend responded update  ok");
-
+        return new MessageResponse(true, "Success", "The Update request has been processed successfully");
     }
 
     public MessageResponse delete(Long id) {
         districtRepository.deleteById(id);
-        return new MessageResponse(true, "Success", "Backend responded delete ok");
-
+        return new MessageResponse(true, "Success", "The Delete request has been processed successfully");
     }
 
     public List<District> getCurrentCityDistricts() {
@@ -79,10 +76,7 @@ public class DistrictService {
         return districtRepository.findByDistrictNameIgnoreCase(name);
     }
 
-
     public List<District> findAll() {
         return districtRepository.findAll();
-
     }
-
 }

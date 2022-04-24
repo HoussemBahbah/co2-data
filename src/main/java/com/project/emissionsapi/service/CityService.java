@@ -15,6 +15,7 @@ public class CityService {
 
     @Autowired
     private CityRepository cityRepository;
+
     @Autowired
     private CityAdminService cityAdminService;
 
@@ -24,18 +25,17 @@ public class CityService {
             return new MessageResponse(false, "Not Success", "Existing");
         }
         cityRepository.save(city);
-        return new MessageResponse(true, "Success", "Backend responded save ok");
-
+        return new MessageResponse(true, "Success", "The request has been processed successfully");
     }
 
     public MessageResponse update(City city) {
         cityRepository.save(city);
-        return new MessageResponse(true, "Success", "Backend responded update  ok");
+        return new MessageResponse(true, "Success", "The Update request has been processed successfully");
     }
 
     public MessageResponse delete(Long id) {
         cityRepository.deleteById(id);
-        return new MessageResponse(true, "Success", "Backend responded delete ok");
+        return new MessageResponse(true, "Success", "The Delete request has been processed successfully");
     }
 
     public City getCurrentCity() {
@@ -53,7 +53,6 @@ public class CityService {
     }
 
     public List<City> findAll() {
-        List<City> cities = cityRepository.findAll();
         return cityRepository.findAll();
     }
 

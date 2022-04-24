@@ -2,7 +2,6 @@ package com.project.emissionsapi.controller;
 
 import com.project.emissionsapi.entity.City;
 import com.project.emissionsapi.entity.Co2Level;
-import com.project.emissionsapi.entity.District;
 import com.project.emissionsapi.entity.CityAdmin;
 import com.project.emissionsapi.model.MessageResponse;
 import com.project.emissionsapi.model.SensorData;
@@ -69,7 +68,6 @@ public class Co2Controller {
 
     @PostMapping
     public MessageResponse save(@RequestBody SensorData sensorData) {
-
         return co2LevelService.saveSensorData(sensorData);
     }
 
