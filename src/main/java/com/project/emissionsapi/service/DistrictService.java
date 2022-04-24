@@ -1,10 +1,12 @@
 package com.project.emissionsapi.service;
 
 import com.project.emissionsapi.entity.City;
+import com.project.emissionsapi.entity.CityAdmin;
 import com.project.emissionsapi.entity.District;
 import com.project.emissionsapi.model.MessageResponse;
 import com.project.emissionsapi.repositories.DistrictRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,28 +17,47 @@ public class DistrictService {
     @Autowired
     private DistrictRepository districtRepository;
 
+    @Autowired
+    private CityAdminService cityAdminService;
+
+    @Autowired
+    private CityService cityService;
+
+    public MessageResponse createDistrict(String districtName) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
+        City city = cityService.findByName(loggedInUser.getCity().getName());
+        District district = new District(districtName);
+        district.setCity(city);
+        city.addDistrict(district);
+        cityService.save(city);
+        return save(district);
+    }
+
     public MessageResponse save(District district) {
         boolean exist = districtRepository.existsById((district.getId()));
         if (exist) {
             return new MessageResponse(false, "Not Success", "Existing");
-
         }
         districtRepository.save(district);
-        return new MessageResponse(true, "Success", "Backend responded save ok");
-
+        return new MessageResponse(true, "Success", "The request has been processed successfully");
     }
 
     public MessageResponse update(District district) {
-
         districtRepository.save(district);
-        return new MessageResponse(true, "Success", "Backend responded update  ok");
-
+        return new MessageResponse(true, "Success", "The Update request has been processed successfully");
     }
 
     public MessageResponse delete(Long id) {
         districtRepository.deleteById(id);
-        return new MessageResponse(true, "Success", "Backend responded delete ok");
+        return new MessageResponse(true, "Success", "The Delete request has been processed successfully");
+    }
 
+    public List<District> getCurrentCityDistricts() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
+        City city = cityService.findByName(loggedInUser.getCity().getName());
+        return city.getDistricts();
     }
 
     public District findById(Long id) {
@@ -55,10 +76,7 @@ public class DistrictService {
         return districtRepository.findByDistrictNameIgnoreCase(name);
     }
 
-
     public List<District> findAll() {
         return districtRepository.findAll();
-
     }
-
 }

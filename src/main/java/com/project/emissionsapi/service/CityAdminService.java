@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 
@@ -18,7 +17,6 @@ public class CityAdminService implements UserDetailsService {
 
     @Autowired
     private CityAdminRepository cityAdminRepository;
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,18 +30,17 @@ public class CityAdminService implements UserDetailsService {
             return new MessageResponse(false, "Not Success", "Existing");
         }
         cityAdminRepository.save(user);
-        return new MessageResponse(true, "Success", "Backend responded save ok");
-
+        return new MessageResponse(true, "Success", "The saving request has been processed successfully");
     }
 
     public MessageResponse update(CityAdmin cityAdmin) {
         cityAdminRepository.save(cityAdmin);
-        return new MessageResponse(true, "Success", "Backend responded update  ok");
+        return new MessageResponse(true, "Success", "The Update request has been processed successfully");
     }
 
     public MessageResponse delete(Long id) {
         cityAdminRepository.deleteById(id);
-        return new MessageResponse(true, "Success", "Backend responded delete ok");
+        return new MessageResponse(true, "Success", "The Delete request has been processed successfully");
 
     }
 

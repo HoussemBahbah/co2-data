@@ -2,7 +2,6 @@ package com.project.emissionsapi.controller;
 
 import com.project.emissionsapi.entity.City;
 import com.project.emissionsapi.entity.Co2Level;
-import com.project.emissionsapi.entity.District;
 import com.project.emissionsapi.entity.CityAdmin;
 import com.project.emissionsapi.model.MessageResponse;
 import com.project.emissionsapi.model.SensorData;
@@ -38,18 +37,7 @@ public class Co2Controller {
 
     @PutMapping
     public MessageResponse update(@RequestParam(value = "id") Long id, @RequestBody SensorData sensorData) {
-        Co2Level co2Level = co2LevelService.findById(id);
-        co2Level.setLevel(sensorData.getLevel());
-        City city = cityService.findByName(sensorData.getCityName());
-        District district = districtService.findByCityAndName(city, sensorData.getDistrictName());
-        co2Level.setDistrict(district);
-        co2Level.setTimestamp(sensorData.getTimestamp());
-        if (district != null && city != null) {
-            co2Level.setDistrict(district);
-        } else {
-            return new MessageResponse(false, "Error", "Invalid city or district name please enter an existing city and district name");
-        }
-        return co2LevelService.update(co2Level);
+        return co2LevelService.updateSensorData(id, sensorData);
     }
 
     @DeleteMapping("/{id}")
@@ -58,12 +46,8 @@ public class Co2Controller {
     }
 
     @GetMapping("/all")
-    public List<Co2Level> findAll() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
-
-        City city = cityService.findByName(loggedInUser.getCity().getName());
-        return districtService.findByCity(city).stream().filter(district -> district.getCity().getName().equals(city.getName())).map(District::getCo2Levels).flatMap(List::stream).collect(java.util.stream.Collectors.toList());
+    public List<Co2Level> findAllCo2LevelsOfTheCurrentCity() {
+        return co2LevelService.findAllByCurrentCity();
 
     }
 
@@ -84,16 +68,7 @@ public class Co2Controller {
 
     @PostMapping
     public MessageResponse save(@RequestBody SensorData sensorData) {
-
-        City city = cityService.findByName(sensorData.getCityName());
-        District district = districtService.findByCityAndName(city, sensorData.getDistrictName());
-        Co2Level co2Level = new Co2Level(sensorData.getLevel(), sensorData.getTimestamp());
-        if (district != null && city != null) {
-            co2Level.setDistrict(district);
-        } else {
-            return new MessageResponse(false, "Error", "Invalid city or district name please enter an existing city and district name");
-        }
-        return co2LevelService.save(co2Level);
+        return co2LevelService.saveSensorData(sensorData);
     }
 
 }

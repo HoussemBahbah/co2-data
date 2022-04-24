@@ -1,16 +1,12 @@
 package com.project.emissionsapi.controller;
 
-import com.project.emissionsapi.entity.City;
 import com.project.emissionsapi.entity.District;
-import com.project.emissionsapi.entity.CityAdmin;
 import com.project.emissionsapi.model.MessageResponse;
 import com.project.emissionsapi.service.CityService;
 import com.project.emissionsapi.service.DistrictService;
 import com.project.emissionsapi.service.CityAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
@@ -32,15 +28,9 @@ public class DistrictController {
     @PostMapping
     public MessageResponse save(@RequestParam(value = "districtName") String districtName) {
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
-        City city = cityService.findByName(loggedInUser.getCity().getName());
-        District district = new District(districtName);
-        district.setCity(city);
-        city.addDistrict(district);
-        cityService.save(city);
-        return districtService.save(district);
+        return districtService.createDistrict(districtName);
     }
+
 
     @PutMapping
     public MessageResponse update(@RequestParam(value = "districtName") String districtName, @RequestParam(value = "newDistrictName") String newDistrictName) {
@@ -49,9 +39,10 @@ public class DistrictController {
         return districtService.update(district);
     }
 
-    @DeleteMapping("/{id}")
-    public MessageResponse delete(@PathVariable Long id) {
-        return districtService.delete(id);
+    @DeleteMapping
+    public MessageResponse delete(@RequestParam(value = "districtName") String districtName) {
+        District district = districtService.findByName(districtName);
+        return districtService.delete(district.getId());
     }
 
     @GetMapping("/all")
@@ -62,10 +53,7 @@ public class DistrictController {
 
     @GetMapping("/cityDistricts")
     public List<District> currentCityDistricts() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        CityAdmin loggedInUser = (CityAdmin) cityAdminService.loadUserByUsername(username);
-        City city = cityService.findByName(loggedInUser.getCity().getName());
-        return city.getDistricts();
+        return districtService.getCurrentCityDistricts();
     }
 
 

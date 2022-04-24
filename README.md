@@ -1,8 +1,10 @@
-# co2 Levels API Readme File
+# Co2 Levels API Readme File
 
 ## Database
 
-In this API project  SQLite is used to store the data, there is no need to connect to a specific database, a file /database.db is automatically created by default (when it does not exist), if you wish deleting the whole database of the project you can delete the file /database.db and another one will be created automatically during the next launch. 
+In this API project, SQLite is used to store the data in /database.db file saved in the project directory, there is no need to connect to a specific database.<br/>
+In case the file doesn't exist or you wish deleting the whole database of the project you can delete the file and a new one will be automatically created during the next run. 
+
 
 ## Starting the project
 

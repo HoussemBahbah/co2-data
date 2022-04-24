@@ -32,27 +32,27 @@ public class EmissionsApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(EmissionsApiApplication.class, args);
-
     }
 
     @Bean
     CommandLineRunner initializeData() {
         return args -> {
+            //Barcelona City creation
             City Barcelona = addCity("Barcelona");
             District gracia = addDistrictToCity(new District("Gràcia"), Barcelona);
             District eixample = addDistrictToCity(new District("Eixample"), Barcelona);
-
+            //Wien City creation
             City Wien = addCity("Wien");
             addDistrictToCity(new District("Währing"), Wien);
             addDistrictToCity(new District("Penzing"), Wien);
-
+            //München City creation
             City München = addCity("München");
             addDistrictToCity(new District("Maxvorstadt"), München);
-
+            //Save
             cityRepository.save(Barcelona);
             cityRepository.save(Wien);
             cityRepository.save(München);
-
+            //City Admin creation
             CityAdmin barcelonaAdmin = new CityAdmin();
             CityAdmin wienAdmin = new CityAdmin();
             addUser("barcelonaAdmin", barcelonaAdmin, Barcelona);
